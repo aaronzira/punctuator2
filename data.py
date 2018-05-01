@@ -5,12 +5,12 @@ import random
 import os
 import sys
 import operator
-import cPickle
+import pickle
 import codecs
 import fnmatch
 import shutil
 
-DATA_PATH = "../data"
+DATA_PATH = "./data"
 
 # path to text file in the format:
 # word1 0.123 0.123 ... 0.123
@@ -77,7 +77,7 @@ def write_vocabulary(vocabulary, file_name):
     if UNK not in vocabulary:
         vocabulary.append(UNK)
 
-    print "Vocabulary size: %d" % len(vocabulary)
+    print("Vocabulary size: %d" % len(vocabulary))
 
     with codecs.open(file_name, 'w', 'utf-8') as f:
         f.write("\n".join(vocabulary))
@@ -196,7 +196,7 @@ def write_processed_dataset(input_files, output_file):
 
                         last_eos_idx = 0 # sequence always starts with a new sentence
 
-    print "%.2f%% UNK-s in %s" % (num_unks / num_total * 100, output_file)
+    print("%.2f%% UNK-s in %s" % (num_unks / num_total * 100, output_file))
 
     dump(data, output_file)
 
@@ -241,7 +241,7 @@ def create_dev_test_train_split_and_vocabulary(root_path, create_vocabulary, tra
                     embeddings.append(e)
 
             with open("We.pcl", 'wb') as f:
-                cPickle.dump(embeddings, f, cPickle.HIGHEST_PROTOCOL)
+                pickle.dump(embeddings, f, pickle.HIGHEST_PROTOCOL)
         else:
             vocabulary = build_vocabulary(word_counts)
         write_vocabulary(vocabulary, WORD_VOCAB_FILE)
@@ -261,7 +261,7 @@ if __name__ == "__main__":
     if os.path.exists(DATA_PATH):
 
         while True:
-            resp = raw_input("Data path '%s' already exists. Do you want to:\n[r]eplace the files in existing data path?\n[e]xit?\n>" % DATA_PATH)
+            resp = input("Data path '%s' already exists. Do you want to:\n[r]eplace the files in existing data path?\n[e]xit?\n>" % DATA_PATH)
             resp = resp.lower().strip()
             if resp not in ('r', 'e'):
                 continue
