@@ -31,13 +31,16 @@ class Punctuator():
             )
 
         self.word_vocabulary = net.x_vocabulary
-        self.punctuation_vocabulary = net.y_vocabulary
+        punctuation_vocabulary = net.y_vocabulary
+        self.punctuation_vocabulary = {}
         
         # remap annotated punctuation tokens other than space to just the punctuation mark
-        for key in self.punctuation_vocabulary.keys():
+        for key in punctuation_vocabulary.keys():
             if not "SPACE" in key:
                 punc_mark = "".join([char for char in key if not char.isalpha()])
-                self.punctuation_vocabulary[punc_mark] = self.punctuation_vocabulary.pop(key)
+                self.punctuation_vocabulary[punc_mark] = punctuation_vocabulary.pop(key)
+            else:
+                self.punctuation_vocabulary[key] = punctuation_vocabulary.pop(key)
 
         self.reverse_word_vocabulary = {v:k for k,v in self.word_vocabulary.items()}
         self.reverse_punctuation_vocabulary = {v:k for k,v in self.punctuation_vocabulary.items()}
